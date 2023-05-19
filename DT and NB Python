@@ -1,9 +1,10 @@
 from sklearn.datasets import load_wine
 from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score, confusion_matrix
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score, confusion_matrix
-
 # Load the wine dataset
 wine = load_wine()
 
@@ -24,14 +25,12 @@ dt_predictions = dt_classifier.predict(X_test)
 # Calculate evaluation metrics for Decision Tree classifier
 dt_precision = precision_score(y_test, dt_predictions, average='weighted')
 dt_recall = recall_score(y_test, dt_predictions, average='weighted')
-dt_specificity = recall_score(y_test, dt_predictions, average='weighted', pos_label=0)
 dt_f1_score = f1_score(y_test, dt_predictions, average='weighted')
 dt_confusion_matrix = confusion_matrix(y_test, dt_predictions)
 
 print("Decision Tree Metrics:")
 print("Precision:", dt_precision)
 print("Recall:", dt_recall)
-print("Specificity:", dt_specificity)
 print("F1-score:", dt_f1_score)
 print("Confusion Matrix:")
 print(dt_confusion_matrix)
@@ -46,15 +45,54 @@ nb_predictions = nb_classifier.predict(X_test)
 # Calculate evaluation metrics for Naive Bayes classifier
 nb_precision = precision_score(y_test, nb_predictions, average='weighted')
 nb_recall = recall_score(y_test, nb_predictions, average='weighted')
-nb_specificity = recall_score(y_test, nb_predictions, average='weighted', )
 nb_f1_score = f1_score(y_test, nb_predictions, average='weighted')
 nb_confusion_matrix = confusion_matrix(y_test, nb_predictions)
 
 print("\nNaive Bayes Metrics:")
 print("Precision:", nb_precision)
 print("Recall:", nb_recall)
-print("Specificity:", nb_specificity)
 print("F1-score:", nb_f1_score)
 print("Confusion Matrix:")
 print(nb_confusion_matrix)
 
+# Create and train an SVM classifier
+svm_classifier = SVC()
+svm_classifier.fit(X_train, y_train)
+
+# Make predictions using the SVM classifier
+svm_predictions = svm_classifier.predict(X_test)
+
+# Calculate evaluation metrics for SVM classifier
+svm_precision = precision_score(y_test, svm_predictions, average='weighted', labels=[0])
+svm_recall = recall_score(y_test, svm_predictions, average='weighted', labels=[0])
+svm_f1_score = f1_score(y_test, svm_predictions, average='weighted', labels=[0])
+svm_confusion_matrix = confusion_matrix(y_test, svm_predictions)
+
+print("\nSVM Metrics:")
+print("Precision:", svm_precision)
+print("Recall:", svm_recall)
+print("F1-score:", svm_f1_score)
+print("Confusion Matrix:")
+print(svm_confusion_matrix)
+
+# Create and train a Random Forest classifier
+rf_classifier = RandomForestClassifier()
+rf_classifier.fit(X_train, y_train)
+
+# Make predictions using the Random Forest classifier
+rf_predictions = rf_classifier.predict(X_test)
+
+# Calculate evaluation metrics for Random Forest classifier
+rf_precision = precision_score(y_test, rf_predictions, average='weighted', labels=[0])
+rf_recall = recall_score(y_test, rf_predictions, average='weighted', labels=[0])
+rf_specificity = recall_score(y_test, rf_predictions, average='weighted',labels=[0])
+rf_f1_score = f1_score(y_test, rf_predictions, average='weighted', labels=[0])
+rf_confusion_matrix = confusion_matrix(y_test, rf_predictions,)
+
+print("\nRandom Forest Metrics:")
+print("Precision:", rf_precision)
+print("Recall:", rf_recall)
+print("Specificity:", rf_specificity)
+print("F1-score:", rf_f1_score)
+print("Confusion Matrix:")
+print(rf_confusion_matrix)
